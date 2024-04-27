@@ -3,7 +3,6 @@ const app = express();
 const PUERTO = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 //app.use(express.static('./src/public'))
 
 /* import exphbs from 'express-handlebars'
@@ -17,12 +16,12 @@ const httpServer = app.listen(PUERTO, () => {
     console.log(`Escuchando en el puerto: ${PUERTO}`);
 })
 
-const io = new Server(httpServer)
+//const io = new Server(httpServer)
 
 import mongoose from 'mongoose';
 import productsRouter from './routes/products.router.js';
 
-mongoose.connect("mongodb+srv://coder:c0derc0der@cluster0.j9ubv2z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect("mongodb+srv://coder:codercoder1@cluster0.j9ubv2z.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => console.log("Funciona"))
     .catch((error) => console.log("Error", error))
 
