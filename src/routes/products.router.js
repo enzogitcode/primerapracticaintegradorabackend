@@ -22,7 +22,7 @@ router.post("/products", async (req, res) => {
     }
 })
 //router.post FUNCIONA
-router.put("/product/:id", async (req, res) => {
+router.put("/product/:_id", async (req, res) => {
     const idProduct = req.params._id
     const newData = req.body
     try {
@@ -38,8 +38,8 @@ router.put("/product/:id", async (req, res) => {
     }
 })
 
-router.delete("/product/:id", async (req, res) => {
-    const idProduct = req.params.id
+router.delete("/product/:_id", async (req, res) => {
+    const idProduct = req.params._id
     try {
         if (!idProduct) {
             return res.status(404).json({ message: "Error: Producto no encontrado" })
