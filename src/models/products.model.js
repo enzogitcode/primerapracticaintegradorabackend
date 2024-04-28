@@ -22,14 +22,17 @@ const productsSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    status: { type: Boolean },
+    status: {
+        type: Boolean,
+        required: true
+    },
     category: {
         type: String,
         required: true
     },
-    thumbnails: { 
-        type: String, 
-        required: true }
+    thumbnails: {
+        type: [String]
+    }
 })
 
 const ProductsModel = mongoose.model("products", productsSchema)
