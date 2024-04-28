@@ -4,8 +4,8 @@ import ProductsModel from "../models/products.model.js";
 
 router.get("/products", async (req, res) => {
     try {
-        const products = await ProductsModel.find()
-        res.json(products)
+        const products = await ProductsModel.find().lean()
+        res.render('index', { products: products })
     } catch (error) {
         res.status(500).json("Error en el servidor")
     }

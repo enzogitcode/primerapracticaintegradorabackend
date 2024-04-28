@@ -8,3 +8,11 @@ h1 {
     text-align: center;
     margin: 5%;
 }
+h2{
+    text-align: center;
+}
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
