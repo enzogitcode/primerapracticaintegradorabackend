@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
     }
 })
 router.get("/products", async (req, res) => {
-    const { limit, page, } = req.query
+    let limit = req.query.limit
+    let page = req.query.page||1
+
     try {
         const products = await ProductsModel.paginate({}, { limit, page })
 
