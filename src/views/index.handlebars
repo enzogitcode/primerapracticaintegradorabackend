@@ -5,21 +5,17 @@
     {{>card}}
 </div>
 
-{{!-- <div class="cardContainer container">
-    {{#each products}}
-    <h2>{{title}}</h2>
-    <p>{{description}}</p>
-    <p>{{price}}</p>
-    <p>{{img}}</p>
-    <p>{{code}}</p>
-    <p>{{stock}}</p>
-    <p>{{category}}</p>
-    <p>{{thumbnails}}</p>
-    <button>Comprar</button>
-    {{/each}} --}}
-    {{!--
-</div>
---}}
+
+{{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"> Anterior </a>
+{{/if}}
+
+{{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"> Siguiente </a>
+{{/if}}
+
+<p>Pagina {{currentPage}} de {{totalPages}} </p>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

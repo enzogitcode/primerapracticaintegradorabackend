@@ -12,11 +12,9 @@ app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
 import productsRouter from './routes/products.router.js';
-
-app.get("/", (req, res) => {
-    res.render('index')
-})
-
+/* import cartsRouter from './routes/cart.router.js'
+ */
+//app.use("/", cartRouter)
 app.use("/", productsRouter);
 
 app.listen(PUERTO, () => {

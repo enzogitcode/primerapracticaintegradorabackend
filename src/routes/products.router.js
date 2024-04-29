@@ -2,10 +2,28 @@ import express from 'express'
 const router = express.Router();
 import ProductsModel from "../models/products.model.js";
 
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const products = await ProductsModel.find().lean()
         res.render('index', { products: products })
+    } catch (error) {
+        res.status(500).json("Error en el servidor")
+    }
+})
+router.get("/products", async (req, res) => {
+    let page= req.query.page||1
+    let limit= req.query.limit||1
+    try {
+        const products = await ProductsModel.paginate()({}, limit, page)
+        res.render("products", {
+            products: products,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevPage: products.prevPage,
+            nextPage: products.nextPage,
+            currentPage: products.page,
+            totalPages: products.totalPages
+        })
     } catch (error) {
         res.status(500).json("Error en el servidor")
     }
@@ -16,7 +34,9 @@ router.post("/products", async (req, res) => {
     try {
         const product = new ProductsModel(newProduct)
         await product.save();
-        res.send({ message: "Producto agregado exitosamente", product: product })
+        res.send({
+            message: "Producto agregado exitosamente", product: product,
+        })
     } catch (error) {
         res.status(500).json({ message: "Error interno del servidor" })
     }
