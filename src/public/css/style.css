@@ -6,10 +6,11 @@
 h1 {
     color: red;
     text-align: center;
-    margin: 5%;
+    margin: 3.5%;
 }
 h2{
     text-align: center;
+    margin-bottom: 2%;
 }
 .cardContainer {
     display: flex;

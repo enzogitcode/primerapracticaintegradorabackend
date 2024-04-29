@@ -12,7 +12,6 @@ app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
 import productsRouter from './routes/products.router.js';
-import viewsRouter from './routes/views.router.js';
 
 app.get("/", (req, res) => {
     res.render('index')
@@ -24,6 +23,7 @@ app.listen(PUERTO, () => {
     console.log(`Escuchando en el puerto: ${PUERTO}`);
 })
 
+//Las query van en las rutas
 
 
 

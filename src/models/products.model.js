@@ -16,7 +16,8 @@ const productsSchema = mongoose.Schema({
     img: { type: String },
     code: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     stock: {
         type: Number,
@@ -28,7 +29,8 @@ const productsSchema = mongoose.Schema({
     },
     category: {
         type: String,
-        required: true
+        required: true,
+        index:true
     },
     thumbnails: {
         type: [String]
