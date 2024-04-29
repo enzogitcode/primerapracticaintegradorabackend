@@ -19,3 +19,6 @@ h2{
     justify-content: space-evenly;
     align-content: space-evenly;
 }
+.divPaginate {
+    font-size: 2rem;
+}

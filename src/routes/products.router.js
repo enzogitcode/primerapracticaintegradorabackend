@@ -11,12 +11,16 @@ router.get("/", async (req, res) => {
     }
 })
 router.get("/products", async (req, res) => {
-    let page= req.query.page||1
-    let limit= req.query.limit||1
+    const { limit, page, } = req.query
     try {
-        const products = await ProductsModel.paginate()({}, limit, page)
-        res.render("products", {
-            products: products,
+        const products = await ProductsModel.paginate({}, { limit, page })
+
+        const productsFinal = products.docs.map(product => {
+            const { _id, ...rest } = product.toObject();
+            return rest;
+        })
+        res.render("index", {
+            products: productsFinal,
             hasPrevPage: products.hasPrevPage,
             hasNextPage: products.hasNextPage,
             prevPage: products.prevPage,
@@ -24,6 +28,7 @@ router.get("/products", async (req, res) => {
             currentPage: products.page,
             totalPages: products.totalPages
         })
+        console.log(products)
     } catch (error) {
         res.status(500).json("Error en el servidor")
     }

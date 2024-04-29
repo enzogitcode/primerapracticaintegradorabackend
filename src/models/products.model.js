@@ -26,7 +26,7 @@ const productsSchema = mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true
+        default: true
     },
     category: {
         type: String,
@@ -34,7 +34,8 @@ const productsSchema = mongoose.Schema({
         index:true
     },
     thumbnails: {
-        type: [String]
+        type: Array,
+        default:[]
     }
 })
 
