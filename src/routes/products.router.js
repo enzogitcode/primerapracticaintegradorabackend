@@ -12,8 +12,8 @@ router.get("/", async (req, res) => {
 })
 router.get("/products", async (req, res) => {
     let limit = req.query.limit
-    let page = req.query.page||1
-
+    let page = req.query.page || 1
+    const { query, sort } = req.query
     try {
         const products = await ProductsModel.paginate({}, { limit, page })
 
@@ -30,7 +30,9 @@ router.get("/products", async (req, res) => {
             currentPage: products.page,
             totalPages: products.totalPages
         })
+
         console.log(products)
+        console.log(productsFinal)
     } catch (error) {
         res.status(500).json("Error en el servidor")
     }
