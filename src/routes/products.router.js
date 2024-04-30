@@ -12,11 +12,7 @@ router.get("/", async (req, res) => {
 })
 router.get("/products", async (req, res) => {
 
-
-    let limit = req.query.limit || 10
-    let page = req.query.page || 1
-    let query = req.query.category
-    let sort= req.query.sort == "1"? 1: req.query.sort == "-1"
+const {limit=10, page= 1, query, sort}= req.query
 
     try {
 
@@ -40,7 +36,9 @@ router.get("/products", async (req, res) => {
             prevPage: products.prevPage,
             nextPage: products.nextPage,
             currentPage: products.page,
-            totalPages: products.totalPages
+            totalPages: products.totalPages,
+            prevLink: products.hasPrevPage? `/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}`: null,
+            nextLink: products.hasNextPage? `/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}`: null,
         })
 
         console.log(products)
@@ -79,7 +77,7 @@ router.put("/products/:pid", async (req, res) => {
     }
 })
 
-router.delete("/products/:pid", async (req, res) => {
+router.delete("products/:pid", async (req, res) => {
 
     let idProduct = req.params.pid
     try {

@@ -7,11 +7,11 @@
 
 <div class="divPaginate text-wrap">
     {{#if hasPrevPage}}
-    <a href="/products?page={{prevPage}}"> Anterior </a>
+    <a href="/products?page={{prevLink}}"> Anterior </a>
     {{/if}}
 
     {{#if hasNextPage}}
-    <a href="/products?page={{nextPage}}"> Siguiente </a>
+    <a href="{{nextLink}}"> Siguiente </a>
     {{/if}}
     <p>Pagina {{currentPage}} de {{totalPages}} </p>
 </div>
