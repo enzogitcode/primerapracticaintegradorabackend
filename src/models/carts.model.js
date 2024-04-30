@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const cartsSchema = mongoose.Schema({
     products: [
         {
-            products: {
+            products: [{
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "product",
+                ref: "products",
                 required: true
-            },
+            }],
             quatity: {
                 type: String, required: true
             }
@@ -16,6 +16,6 @@ const cartsSchema = mongoose.Schema({
 
 })
 
-const CartModel = mongoose.model("carts", cartsSchema)
+const CartsModel = mongoose.model("carts", cartsSchema)
 
-export default CartModel;
+export default CartsModel;

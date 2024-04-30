@@ -60,34 +60,30 @@ router.post("/products", async (req, res) => {
         res.status(500).json({ message: "Error interno del servidor" })
     }
 })
-//router.post FUNCIONA
-router.put("/product/:pid", async (req, res) => {
+router.put("/products/:pid", async (req, res) => {
+    const idProduct = req.params.pid
+    const newData = req.body
     try {
-        const idProduct = req.params.pid
-        const newData = req.body
-        let foundedProduct = await ProductsModel.find(idProduct).lean()
+        let foundedProduct = await ProductsModel.find(idProduct)
+        await ProductsModel.findByIdAndUpdate(idProduct, newData)
+        res.status(200).send({ message: "Producto actualizado exitosamente" })
 
         if (!foundedProduct) {
             return res.status(404).json({ message: "Error: Producto no encontrado" })
         }
-        else {
-            const product = await ProductsModel.findByIdAndUpdate(idProduct, newData)
-            res.status(200).send({ message: "Producto actualizado exitosamente" })
-        }
+
     } catch (error) {
         res.status(500).json({ message: "Error al actualizar el producto" })
     }
 })
 
-router.delete("/product/:pid", async (req, res) => {
+router.delete("/products/:pid", async (req, res) => {
 
+    let idProduct = req.params.pid
     try {
-        const idProduct = req.params.pid
+        await ProductsModel.findByIdAndDelete(idProduct);
         if (!idProduct) {
             return res.status(404).json({ message: "Error: Producto no encontrado" })
-        }
-        else {
-            return await ProductsModel.findByIdAndDelete(idProduct);
         }
     } catch (error) {
         res.status(500).json({ message: "Error al eliminar el producto" })

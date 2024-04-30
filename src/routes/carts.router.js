@@ -12,8 +12,8 @@ cartRouter.get("/api/carts/", async (req, res) => {
 cartRouter.get("/api/carts/:cid", async (req, res) => {
     let { cartId } = req.params
     try {
-        const cart = await CartModel.findById({_id: cartId})
-        res.json(cart.products)
+        const cart = await CartModel.findById({ _id: cartId })
+        res.render("cartsContainer", { carts: cart })
         if (!cartId) {
             console.log("No existe un carrito con ese Id")
             res.send.json("No existe un carrito con ese Id")
@@ -26,7 +26,7 @@ cartRouter.get("/api/carts/:cid", async (req, res) => {
 cartRouter.post("/api/carts", async (req, res) => {
     try {
         const newCart = await new CartManager.createCart();
-        res.json(newCart)
+        res.render("index", { carts: newCart })
     } catch (error) {
         console.log("Error al crear el carrito", error)
         res.status(500).json({ message: "Error: No se pudo crear el carrito" })
@@ -37,26 +37,39 @@ cartRouter.post("/api/carts", async (req, res) => {
 cartRouter.delete("/api/carts/:cid/products/:pid", async (req, res) => {
     let cartId = req.params.cid
     let productId = req.params.pid
+    try {
+        const foundedCart = await CartManager.getCartById({ _id: cartId })
+        const deletedProduct = await CartModel.findByIdandDelete({ _id: productId })
+
+    } catch (error) {
+        res.status(500).json({ message: "Error: No se pudo eliminar el producto seleccionado" })
+    }
+
+})
+//actualizar la cantidad de ejemplares de un determinado producto
+cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
+    let cartId = req.params.cid
+    let productId = req.params.pid
 
     try {
-        const deletedProduct = await CartManager.findByIdandDelete({_id})
+        const deletedProduct = await CartModel.findByIdandDelete({ _id: productId })
+        res.send.json("Carrito eliminado con exito")
+
     } catch (error) {
+        res.status(500).json({ message: "Error: No se pudo actualizar la cantidad" })
 
     }
 
 })
-cartRouter.get("/api/carts/:cid/products", async (req, res) => {
+//Eliminar todos los productos del carrito seleccionado
+cartRouter.delete("/api/carts/:cid", async (req, res) => {
+    let { cid } = req.params
+    try {
+        const deleteCart = await CartManager.findByIdandDelete({ _id: cid })
+        res.json({ message: "Carrito eliminado con éxito" })
+    } catch (error) {
+        res.status(500).json({ message: "Error: No se pudo actualizar la cantidad" })
 
+    }
 })
-//put
-cartRouter.get("/api/carts/:cid/products/:pid", async (req, res) => {
-})
-/* 
-ropiedad products, el id
-de cada producto generado
-dentro del array tiene que hacer
-referencia al modelo de Products.
-Modificar la ruta /:cid para que al
-tra */
-
 export default cartRouter

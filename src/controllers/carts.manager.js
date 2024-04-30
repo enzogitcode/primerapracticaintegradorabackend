@@ -31,7 +31,7 @@ class CartManager {
             if (productExist) {
                 productExist.quantity += quantity;
             } else {
-                carrito.products.push({ product: productId, quantity });
+                cart.products.push({ product: productId, quantity });
             }
 
             cart.markModified("products");
