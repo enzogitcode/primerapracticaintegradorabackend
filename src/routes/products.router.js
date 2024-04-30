@@ -16,14 +16,14 @@ router.get("/products", async (req, res) => {
     let limit = req.query.limit || 10
     let page = req.query.page || 1
     let query = req.query.category
-    //let sort= req.query.sort == "1"? 1: req.query.sort == "-1"
+    let sort= req.query.sort == "1"? 1: req.query.sort == "-1"
 
     try {
 
-        /* const sortOption = {}
+    const sortOption = {}
        if (sort !== 0) {
            sortOption.price = sort;
-       }  */
+       }
 
         const products = await ProductsModel.paginate({}, { limit, page })
 
@@ -31,7 +31,9 @@ router.get("/products", async (req, res) => {
             const { _id, ...rest } = product.toObject();
             return rest;
         })
+        
         res.render("index", {
+            payload: productsFinal,
             products: productsFinal,
             hasPrevPage: products.hasPrevPage,
             hasNextPage: products.hasNextPage,
