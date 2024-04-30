@@ -16,6 +16,7 @@ const {limit=10, page= 1, query, sort}= req.query
 
     try {
 
+        
     const sortOption = {}
        if (sort !== 0) {
            sortOption.price = sort;
