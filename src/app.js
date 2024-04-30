@@ -23,7 +23,6 @@ app.listen(PUERTO, () => {
     console.log(`Escuchando en el puerto: ${PUERTO}`);
 })
 
-//Las query van en las rutas
 
 
 

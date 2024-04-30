@@ -11,20 +11,20 @@ router.get("/", async (req, res) => {
     }
 })
 router.get("/products", async (req, res) => {
-    
-    
-    let limit = req.query.limit||10
+
+
+    let limit = req.query.limit || 10
     let page = req.query.page || 1
-    let query= req.query.category
+    let query = req.query.category
     //let sort= req.query.sort == "1"? 1: req.query.sort == "-1"
-    
+
     try {
-        
-         /* const sortOption = {}
-        if (sort !== 0) {
-            sortOption.price = sort;
-        }  */
-        
+
+        /* const sortOption = {}
+       if (sort !== 0) {
+           sortOption.price = sort;
+       }  */
+
         const products = await ProductsModel.paginate({}, { limit, page })
 
         const productsFinal = products.docs.map(product => {
@@ -62,10 +62,12 @@ router.post("/products", async (req, res) => {
 })
 //router.post FUNCIONA
 router.put("/product/:pid", async (req, res) => {
-    const idProduct = req.params.pid
-    const newData = req.body
     try {
-        if (!idProduct) {
+        const idProduct = req.params.pid
+        const newData = req.body
+        let foundedProduct = await ProductsModel.find(idProduct).lean()
+
+        if (!foundedProduct) {
             return res.status(404).json({ message: "Error: Producto no encontrado" })
         }
         else {
@@ -78,17 +80,17 @@ router.put("/product/:pid", async (req, res) => {
 })
 
 router.delete("/product/:pid", async (req, res) => {
-    const idProduct = req.params.pid
+
     try {
+        const idProduct = req.params.pid
         if (!idProduct) {
             return res.status(404).json({ message: "Error: Producto no encontrado" })
         }
         else {
-            const product = await ProductsModel.findByIdAndDelete(idProduct)
+            return await ProductsModel.findByIdAndDelete(idProduct);
         }
     } catch (error) {
         res.status(500).json({ message: "Error al eliminar el producto" })
-
     }
 })
 

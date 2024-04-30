@@ -1,0 +1,9 @@
+<h3 class="text-center">Carritos</h3>
+
+{{#each carts}}
+<p>Productos: en el carrito:</p>
+{{this.products.title}}
+{{this.products.quantity}}
+<p>Total de productos en el carrito:{{this.carts.quantity}}</p>
+
+{{/each}}
