@@ -11,10 +11,20 @@ router.get("/", async (req, res) => {
     }
 })
 router.get("/products", async (req, res) => {
-    let limit = req.query.limit
+    
+    
+    let limit = req.query.limit||10
     let page = req.query.page || 1
-    const { query, sort } = req.query
+    let query= req.query.category
+    //let sort= req.query.sort == "1"? 1: req.query.sort == "-1"
+    
     try {
+        
+         /* const sortOption = {}
+        if (sort !== 0) {
+            sortOption.price = sort;
+        }  */
+        
         const products = await ProductsModel.paginate({}, { limit, page })
 
         const productsFinal = products.docs.map(product => {

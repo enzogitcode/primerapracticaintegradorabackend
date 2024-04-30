@@ -11,11 +11,13 @@ app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
+import viewsRouter from './routes/views.router.js'
 import productsRouter from './routes/products.router.js';
-/* import cartsRouter from './routes/cart.router.js'
- */
-//app.use("/", cartRouter)
+ import cartsRouter from './routes/carts.router.js'
+ 
+app.use("/", cartsRouter)
 app.use("/", productsRouter);
+app.use("/", viewsRouter);
 
 app.listen(PUERTO, () => {
     console.log(`Escuchando en el puerto: ${PUERTO}`);
