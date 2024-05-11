@@ -54,7 +54,7 @@ cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
 
     try {
         const deletedProduct = await CartModel.findByIdandDelete({ _id: productId })
-        res.send.json("Carrito eliminado con exito")
+        res.send.json("Producto eliminado con exito")
 
     } catch (error) {
         res.status(500).json({ message: "Error: No se pudo actualizar la cantidad" })

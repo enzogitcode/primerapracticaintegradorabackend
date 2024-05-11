@@ -1,4 +1,5 @@
 import CartModel from "../models/carts.model.js";
+import ProductsModel from "../models/products.model.js";
 
 class CartManager {
     async createCart() {
@@ -44,6 +45,24 @@ class CartManager {
             throw error;
         }
     }
+    async deleteProducts(cartId, productId){
+        try {
+            const cart= await CartModel.findById(cartId)
+            if (!cart) {
+                throw new Error("Carrito no encontrado")
+            }
+            const product= await ProductsModel.findById(productId)
+            if (!product) {
+                throw new Error ("No existe un producto con ese Id")
+            }
+
+        } catch (error) {
+            console.log("Error no se pudo eliminar el producto del carrito", error);
+
+            throw error
+        }
+    }
 }
+
 
 export default CartManager;

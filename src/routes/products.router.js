@@ -16,7 +16,6 @@ const {limit=10, page= 1, query, sort}= req.query
 
     try {
 
-        
     const sortOption = {}
        if (sort !== 0) {
            sortOption.price = sort;
@@ -72,7 +71,6 @@ router.put("/products/:pid", async (req, res) => {
         if (!foundedProduct) {
             return res.status(404).json({ message: "Error: Producto no encontrado" })
         }
-
     } catch (error) {
         res.status(500).json({ message: "Error al actualizar el producto" })
     }
