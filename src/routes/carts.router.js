@@ -9,14 +9,14 @@ const cartManager = new CartManager()
 //Visualizar todos los carritos existentes //Funciona
 cartRouter.get("/carts/", async (req, res) => {
     const carts = await CartModel.find().lean();
-    res.render("cartsContainer", { carts: carts })
+    res.render("cartsContainer", { products: carts })
 })
 //Visualizar un solo carrito
 cartRouter.get("/carts/:cid", async (req, res) => {
     let cartId = req.params.cid
     try {
         const cart = await CartModel.findById(cartId).lean()
-        res.render("cartsContainer", { carts: cart })
+        res.render("cartsContainer", { products: cart })
         if (!cart) {
             console.log("No existe un carrito con ese Id")
             res.send.json("No existe un carrito con ese Id")
@@ -30,7 +30,7 @@ cartRouter.get("/carts/:cid", async (req, res) => {
 cartRouter.post("/api/carts", async (req, res) => {
     try {
         const newCart = await cartManager.createCart();
-        res.render("index", { carts: newCart })
+        res.render("cartsContainer", { carts: newCart })
     } catch (error) {
         console.log("Error al crear el carrito", error)
         res.status(500).json({ message: "Error: No se pudo crear el carrito" })
@@ -40,7 +40,7 @@ cartRouter.post("/api/carts", async (req, res) => {
 cartRouter.post("/api/carts/:cid/products/:pid", async (req, res) => {
     let cartId = req.params.cid
     let productId = req.params.pid
-    let quantity = req.body.quantity||1
+    let quantity = req.body.quantity || 1
     try {
         const updatedCart = await cartManager.addProducts(cartId, productId, quantity)
         res.json(updatedCart)
@@ -49,22 +49,20 @@ cartRouter.post("/api/carts/:cid/products/:pid", async (req, res) => {
 
     }
 })
-
-
-/* Eliminar del carrito el producto seleccionado. */
-cartRouter.delete("/api/carts/:cid/products/:pid", async (req, res) => {
-    let { cartId, productId } = req.params
+//actualizar el carrito
+cartRouter.put("/api/carts/:cid", async (req, res) => {
+    let cartId = req.params.cid
+    let updatedProducts = req.body
     try {
-        const foundedCart = await CartManager.getCartById({ _id: cartId })
-        const deletedProduct = await CartModel.findByIdandDelete({ _id: productId })
-
+        const updatedCart = await cartManager.updateCart(cartId, updatedProducts);
+        res.json(updatedCart)
     } catch (error) {
-        res.status(500).json({ message: "Error: No se pudo eliminar el producto seleccionado" })
+        console.log("No se pudo actualizar el carrito");
+        res.status(500).json({ message: "Error en el servidor" })
     }
-
 })
 //actualizar la cantidad de ejemplares de un determinado producto
-cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
+cartRouter.put("/api/carts/:cid", async (req, res) => {
     let cartId = req.params.cid
     let productId = req.params.pid
 
@@ -78,19 +76,34 @@ cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
     }
 
 })
+
+/* Eliminar del carrito el producto seleccionado. */
+cartRouter.delete("/api/carts/:cid/products/:pid", async (req, res) => {
+    /* let cartId = req.params.cid
+    let productId= req.params.pid */
+    let { cid: cartId, pid: productId } = req.params
+    try {
+        const updatedCart = await cartManager.deleteProducts(cartId, productId)
+        res.json({ message: "Producto eliminado correctamente", updatedCart })
+
+    } catch (error) {
+        res.status(500).json({ message: "Error: No se pudo eliminar el producto seleccionado" })
+    }
+})
+
 //Eliminar todos los productos del carrito seleccionado
 cartRouter.delete("/api/carts/:cid", async (req, res) => {
+    let cid = req.params.cid
     try {
-        let cid = req.params.cid
-        await CartManager.findByIdandDelete(cid)
+        const emptyCart= await cartManager.cleanCart(cid)
         if (!cid) {
             res.json({ message: "No existe un carrito con ese id" })
         }
-        await carts.save();
+        await emptyCart.save();
         res.json({ message: "Carrito eliminado con éxito" })
     } catch (error) {
-        res.status(500).json({ message: "Error: No se pudo actualizar la cantidad" })
-
+        res.status(500).json({ message: "Error: No se pudo vaciar el carrito" })
+        console.log(error);
     }
 })
 export default cartRouter
