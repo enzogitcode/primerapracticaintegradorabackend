@@ -62,9 +62,12 @@ cartRouter.put("/api/carts/:cid", async (req, res) => {
     }
 })
 //actualizar la cantidad de ejemplares de un determinado producto
-cartRouter.put("/api/carts/:cid", async (req, res) => {
+cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
     let cartId = req.params.cid
     let productId = req.params.pid
+    let newQuantity= req.body.quantity
+
+    const updatedCart= await 
 
     try {
         const deletedProduct = await CartModel.findByIdandDelete({ _id: productId })
