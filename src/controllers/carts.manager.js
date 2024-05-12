@@ -46,14 +46,29 @@ class CartManager {
             throw error;
         }
     }
+    async updateCart (cartId, updatedProducts) {
+        try {
+            const cart = await CartModel.findById(cartId)
+            if (!cart) {
+                console.log("Carrito no encontrado");
+
+            }
+            cart.products= updatedProducts
+            cart.markModified("products") 
+            return cart
+            
+        } catch (error) {
+            console.log ("No se pudo actualizar el carrito", error)
+            throw error
+        }
+    }
     async deleteProducts(cartId, productId){
         try {
-            const cart= await CartManager.findById(cartId)
+            const cart= await CartModel.findById(cartId)
             if (!cart) {
                 throw new Error("Carrito no encontrado")
             }
-            cart.products= await ProductsModel.findByIdAndDelete(productId)
-            
+            cart.products= await ProductsModel.findById(productId)
             cart.markModified("products");
             await cart.save();
             return cart;

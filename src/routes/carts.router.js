@@ -57,7 +57,7 @@ cartRouter.put("/api/carts/:cid", async (req, res) => {
         const updatedCart = await cartManager.updateCart(cartId, updatedProducts);
         res.json(updatedCart)
     } catch (error) {
-        console.log("No se pudo actualizar el carrito");
+        console.log("No se pudo actualizar el carrito", error);
         res.status(500).json({ message: "Error en el servidor" })
     }
 })
@@ -79,9 +79,8 @@ cartRouter.put("/api/carts/:cid", async (req, res) => {
 
 /* Eliminar del carrito el producto seleccionado. */
 cartRouter.delete("/api/carts/:cid/products/:pid", async (req, res) => {
-    /* let cartId = req.params.cid
-    let productId= req.params.pid */
-    let { cid: cartId, pid: productId } = req.params
+     let cartId = req.params.cid
+    let productId= req.params.pid 
     try {
         const updatedCart = await cartManager.deleteProducts(cartId, productId)
         res.json({ message: "Producto eliminado correctamente", updatedCart })
