@@ -62,6 +62,9 @@ class CartManager {
             throw error
         }
     }
+    async updateProductQuantity (cartId, productId) {
+        
+    }
     async deleteProducts(cartId, productId){
         try {
             const cart= await CartModel.findById(cartId)

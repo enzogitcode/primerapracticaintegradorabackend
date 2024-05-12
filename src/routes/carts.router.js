@@ -65,15 +65,15 @@ cartRouter.put("/api/carts/:cid", async (req, res) => {
 cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
     let cartId = req.params.cid
     let productId = req.params.pid
-    let newQuantity= req.body.quantity
-
-    const updatedCart= await 
+    let newQuantity = req.body.quantity
 
     try {
-        const deletedProduct = await CartModel.findByIdandDelete({ _id: productId })
-        res.send.json("Producto eliminado con exito")
+    const updatedCart = await cartManager.updateProductQuantity(cartId, productId, newQuantity)
+
+        res.json({message:"Cantidad actualizada correctamente", updatedCart})
 
     } catch (error) {
+        console.log("No se pudo actualizar la cantidad", error);
         res.status(500).json({ message: "Error: No se pudo actualizar la cantidad" })
 
     }
@@ -82,8 +82,8 @@ cartRouter.put("/api/carts/:cid/products/:pid", async (req, res) => {
 
 /* Eliminar del carrito el producto seleccionado. */
 cartRouter.delete("/api/carts/:cid/products/:pid", async (req, res) => {
-     let cartId = req.params.cid
-    let productId= req.params.pid 
+    let cartId = req.params.cid
+    let productId = req.params.pid
     try {
         const updatedCart = await cartManager.deleteProducts(cartId, productId)
         res.json({ message: "Producto eliminado correctamente", updatedCart })
@@ -97,7 +97,7 @@ cartRouter.delete("/api/carts/:cid/products/:pid", async (req, res) => {
 cartRouter.delete("/api/carts/:cid", async (req, res) => {
     let cid = req.params.cid
     try {
-        const emptyCart= await cartManager.cleanCart(cid)
+        const emptyCart = await cartManager.cleanCart(cid)
         if (!cid) {
             res.json({ message: "No existe un carrito con ese id" })
         }
