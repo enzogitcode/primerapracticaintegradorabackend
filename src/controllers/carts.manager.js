@@ -17,6 +17,7 @@ class CartManager {
             const cart = await CartModel.findById(cartId)
             if (!cart) {
                 console.log("No existe un carrito con ese Id");
+                return null
             }
             return cart;
         } catch (error) {
@@ -24,7 +25,7 @@ class CartManager {
             throw error
         }
     }
-    async addProducts({ cartId, productId, quantity }) {
+    async addProducts(cartId, productId, quantity) {
         try {
             const cart = await this.getCartById(cartId);
             const productExist = cart.products.find(item => item.product.toString() === productId);
@@ -51,11 +52,14 @@ class CartManager {
             if (!cart) {
                 throw new Error("Carrito no encontrado")
             }
-            const product= await ProductsModel.findById(productId)
+            const product= await ProductsModel.findByIdandDelete(productId)
             if (!product) {
                 throw new Error ("No existe un producto con ese Id")
             }
 
+            cart.markModified("products");
+            await cart.save();
+            return cart;
         } catch (error) {
             console.log("Error no se pudo eliminar el producto del carrito", error);
 
